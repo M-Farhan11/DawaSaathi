@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Common Health Issues - DawaSaathi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#00685f",
+                    "mint": "#96f3e1",
+                    "mint-light": "#d6f5ee",
+                    "background": "#fff8f5",
+                    "charcoal": "#1e1b19",
+                    "coral": "#c6495e",
+                    "coral-light": "#fef2f2"
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .urdu { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+    .issue-card { transition: all 0.2s ease; }
+    .issue-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+</style>
+</head>
+<body class="bg-background text-charcoal">
+
+<!-- TOP NAVIGATION -->
+<header class="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+        <a href="{{ url_for('index') }}" class="flex items-center gap-2">
+            <span class="text-2xl font-bold text-primary tracking-tight">DawaSaathi</span>
+            <span class="urdu text-lg border-l border-stone-300 pl-2">دوا ساتھی</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="{{ url_for('index') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">Home</a>
+            <a href="{{ url_for('common_issues') }}" class="text-sm font-semibold text-primary border-b-2 border-primary pb-1">Common Issues</a>
+            <a href="{{ url_for('about') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">About</a>
+        </nav>
+        <button class="px-4 py-1.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-mint-light transition-colors">
+            EN | <span class="urdu">اردو</span>
+        </button>
+    </div>
+</header>
+
+<main class="pt-24 pb-12 px-5 md:px-10 max-w-6xl mx-auto">
+
+    <!-- PAGE HEADER -->
+    <section class="bg-mint-light rounded-3xl p-8 md:p-12 mb-10 text-center">
+        <span class="inline-block bg-white/80 text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-5">
+            Health Guide
+        </span>
+        <h1 class="text-3xl md:text-4xl font-bold text-charcoal mb-2">Common Health Problems</h1>
+        <h2 class="urdu text-2xl md:text-3xl text-charcoal mb-4">عام صحت کے مسائل</h2>
+        <p class="text-stone-600 max-w-2xl mx-auto">
+            Quick guidance for everyday health issues. Find safe remedies and common medicines for daily problems.
+        </p>
+    </section>
+
+    <!-- SMART SEARCH BAR -->
+    <section class="mb-8">
+        <form action="{{ url_for('search_issue') }}" method="POST" class="max-w-3xl mx-auto">
+            <div class="relative">
+                <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-stone-400" style="font-size: 28px;">search</span>
+                <input 
+                    type="text" 
+                    name="problem_text" 
+                    placeholder="Describe your problem... e.g., 'sar dard', 'fever ho raha hai', 'khansi'"
+                    class="w-full pl-14 pr-32 py-5 text-base rounded-full border border-stone-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-mint shadow-sm"
+                />
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
+                    Search
+                </button>
+            </div>
+            <p class="text-center text-sm text-stone-500 mt-3">
+                Type in Urdu, English, or Roman Urdu — AI will find the right guide
+                <span class="urdu text-stone-600 block mt-1">اردو، انگریزی یا رومن اردو میں لکھیں</span>
+            </p>
+        </form>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="flex items-center gap-4 my-10">
+        <div class="flex-1 h-px bg-stone-200"></div>
+        <p class="text-sm text-stone-500 font-medium">Or browse common issues below</p>
+        <div class="flex-1 h-px bg-stone-200"></div>
+    </div>
+
+    <!-- HEALTH ISSUES GRID -->
+    <section class="mb-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            
+            <a href="{{ url_for('health_issue', issue_name='headache') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-red-500" style="font-size: 36px;">psychology</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Headache</p>
+                <p class="urdu text-stone-600">سر درد</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='fever') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-orange-500" style="font-size: 36px;">thermometer</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Fever</p>
+                <p class="urdu text-stone-600">بخار</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='cold') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-blue-500" style="font-size: 36px;">ac_unit</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Cold & Flu</p>
+                <p class="urdu text-stone-600">نزلہ زکام</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='cough') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-cyan-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-cyan-500" style="font-size: 36px;">air</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Cough</p>
+                <p class="urdu text-stone-600">کھانسی</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='sore-throat') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-pink-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-pink-500" style="font-size: 36px;">sentiment_dissatisfied</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Sore Throat</p>
+                <p class="urdu text-stone-600">گلے کی خراش</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='stomach') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-yellow-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-yellow-600" style="font-size: 36px;">gastroenterology</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Stomach Pain</p>
+                <p class="urdu text-stone-600">پیٹ درد</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='acidity') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-purple-500" style="font-size: 36px;">local_fire_department</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Acidity</p>
+                <p class="urdu text-stone-600">تیزابیت</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='body-ache') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-green-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-green-600" style="font-size: 36px;">accessibility_new</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Body Ache</p>
+                <p class="urdu text-stone-600">جسم درد</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='diarrhea') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-amber-600" style="font-size: 36px;">water_drop</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Diarrhea</p>
+                <p class="urdu text-stone-600">اسہال</p>
+            </a>
+
+            <a href="{{ url_for('health_issue', issue_name='allergies') }}" class="issue-card bg-white rounded-2xl p-6 border border-stone-100 text-center cursor-pointer">
+                <div class="w-16 h-16 rounded-2xl bg-mint-light flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 36px;">eco</span>
+                </div>
+                <p class="font-bold text-charcoal mb-1">Allergies</p>
+                <p class="urdu text-stone-600">الرجی</p>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- WHEN TO SEE A DOCTOR -->
+    <section class="mb-12">
+        <div class="bg-coral-light border-2 border-coral/30 rounded-3xl p-8">
+            <div class="flex items-center gap-3 mb-5">
+                <span class="material-symbols-outlined text-coral" style="font-size: 32px;">warning</span>
+                <h3 class="text-xl font-bold text-coral">When to See a Doctor</h3>
+                <span class="urdu text-lg text-coral">/ ڈاکٹر سے کب رجوع کریں</span>
+            </div>
+            <p class="text-stone-700 mb-4">Don't delay seeing a doctor if you experience any of these:</p>
+            <ul class="space-y-3 mb-6">
+                <li class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-coral text-base mt-1">circle</span>
+                    <div>
+                        <p class="font-semibold">Severe symptoms that don't improve in 2-3 days</p>
+                        <p class="urdu text-stone-600 text-sm">شدید علامات جو 2-3 دن میں ٹھیک نہ ہوں</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-coral text-base mt-1">circle</span>
+                    <div>
+                        <p class="font-semibold">Fever above 103°F (39.4°C)</p>
+                        <p class="urdu text-stone-600 text-sm">103 ڈگری سے زیادہ بخار</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-coral text-base mt-1">circle</span>
+                    <div>
+                        <p class="font-semibold">Difficulty breathing or chest pain</p>
+                        <p class="urdu text-stone-600 text-sm">سانس کی تکلیف یا سینے میں درد</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-coral text-base mt-1">circle</span>
+                    <div>
+                        <p class="font-semibold">Severe pain or sudden onset of symptoms</p>
+                        <p class="urdu text-stone-600 text-sm">شدید درد یا اچانک علامات</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-coral text-base mt-1">circle</span>
+                    <div>
+                        <p class="font-semibold">Symptoms in infants or elderly people</p>
+                        <p class="urdu text-stone-600 text-sm">بچوں یا بزرگوں میں علامات</p>
+                    </div>
+                </li>
+            </ul>
+            
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-stone-100 py-8 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <p class="font-bold text-primary text-lg">DawaSaathi <span class="urdu">دوا ساتھی</span></p>
+            <p class="text-xs text-stone-500 mt-1">Powered by Google Gemini AI</p>
+        </div>
+        
+    </div>
+</footer>
+
+</body>
+</html>
