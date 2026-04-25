@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>About - DawaSaathi</title>
+<title>DawaSaathi - Your AI Medicine Guide</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -32,6 +32,24 @@
     body { font-family: 'Inter', sans-serif; }
     .urdu { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .tab-btn.active { background-color: #00685f; color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    .tab-btn { transition: all 0.2s ease; }
+
+    @keyframes pulse-ring {
+        0%   { box-shadow: 0 0 0 0 rgba(0,104,95,0.4); }
+        70%  { box-shadow: 0 0 0 20px rgba(0,104,95,0); }
+        100% { box-shadow: 0 0 0 0 rgba(0,104,95,0); }
+    }
+    @keyframes pulse-red {
+        0%   { box-shadow: 0 0 0 0 rgba(198,73,94,0.5); }
+        70%  { box-shadow: 0 0 0 20px rgba(198,73,94,0); }
+        100% { box-shadow: 0 0 0 0 rgba(198,73,94,0); }
+    }
+    .mic-idle    { animation: pulse-ring 2s infinite; }
+    .mic-active  { animation: pulse-red 1s infinite; }
 </style>
 </head>
 <body class="bg-background text-charcoal">
@@ -43,9 +61,9 @@
             <span class="urdu text-lg border-l border-stone-300 pl-2">دوا ساتھی</span>
         </a>
         <nav class="hidden md:flex items-center gap-8">
-            <a href="{{ url_for('index') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">Home</a>
+            <a href="{{ url_for('index') }}" class="text-sm font-semibold text-primary border-b-2 border-primary pb-1">Home</a>
             <a href="{{ url_for('common_issues') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">Common Issues</a>
-            <a href="{{ url_for('about') }}" class="text-sm font-semibold text-primary border-b-2 border-primary pb-1">About</a>
+            <a href="{{ url_for('about') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">About</a>
         </nav>
         <button class="px-4 py-1.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-mint-light transition-colors">
             EN | <span class="urdu">اردو</span>
@@ -53,182 +71,373 @@
     </div>
 </header>
 
-<main class="pt-24 pb-16 px-5 md:px-10 max-w-5xl mx-auto">
+<main class="pt-24 pb-12 px-5 md:px-10 max-w-6xl mx-auto">
 
-    <!-- Hero -->
-    <section class="text-center mb-16">
-        <span class="inline-block bg-mint-light text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-6">
-            About DawaSaathi
-        </span>
-        <h1 class="text-4xl md:text-5xl font-bold text-charcoal mb-4 leading-tight">
-            Pakistan's AI Medicine Assistant
-        </h1>
-        <p class="urdu text-2xl text-stone-600 mb-6">پاکستان کا پہلا اے آئی دوا معاون</p>
-        <p class="text-stone-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            DawaSaathi was built to bridge a critical gap in healthcare accessibility across Pakistan —
-            giving every citizen, regardless of literacy or language, the ability to understand their medicine.
-        </p>
-    </section>
-
-    <!-- The Problem -->
-    <section class="mb-16">
-        <div class="bg-coral-light border border-coral/20 rounded-3xl p-8 md:p-12">
-            <h2 class="text-2xl font-bold text-charcoal mb-2">The Problem</h2>
-            <p class="urdu text-lg text-stone-600 mb-8">مسئلہ</p>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-2xl p-6 shadow-sm text-center">
-                    <p class="text-4xl font-extrabold text-coral mb-2">40%</p>
-                    <p class="text-sm font-semibold text-charcoal mb-1">of Pakistanis are illiterate</p>
-                    <p class="urdu text-stone-500 text-sm">پاکستانی آبادی ناخواندہ ہے</p>
-                </div>
-                <div class="bg-white rounded-2xl p-6 shadow-sm text-center">
-                    <p class="text-4xl font-extrabold text-coral mb-2">60%</p>
-                    <p class="text-sm font-semibold text-charcoal mb-1">cannot read English medicine labels</p>
-                    <p class="urdu text-stone-500 text-sm">انگریزی لیبل نہیں پڑھ سکتے</p>
-                </div>
-                <div class="bg-white rounded-2xl p-6 shadow-sm text-center">
-                    <p class="text-4xl font-extrabold text-coral mb-2">240M</p>
-                    <p class="text-sm font-semibold text-charcoal mb-1">people who need this solution</p>
-                    <p class="urdu text-stone-500 text-sm">افراد جنہیں اس کی ضرورت ہے</p>
-                </div>
-            </div>
-            <p class="text-stone-600 mt-8 leading-relaxed">
-                Incorrect dosage, missed timing, dangerous drug combinations, and unknown side effects are silent threats that affect millions of Pakistani households daily.
-                Rural communities, the elderly, and those without access to qualified pharmacists are the most vulnerable.
+    <section class="bg-mint-light rounded-3xl p-6 md:p-12 mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="inline-block bg-white/80 text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-6">
+                AI Medicine Guide
+            </span>
+            <h1 class="text-4xl md:text-5xl font-bold text-charcoal mb-3 leading-tight">
+                Identify Your Medicine in Seconds
+            </h1>
+            <h2 class="urdu text-2xl md:text-3xl text-charcoal mb-5">
+                چند سیکنڈ میں اپنی دوا کو پہچانیں
+            </h2>
+            <p class="text-stone-600 text-base md:text-lg">
+                Show us your medicine — by photo, name, or voice — and get instant information in Urdu and English with audio playback.
             </p>
         </div>
-    </section>
 
-    <!-- Our Solution -->
-    <section class="mb-16">
-        <h2 class="text-2xl font-bold text-charcoal mb-2">Our Solution</h2>
-        <p class="urdu text-lg text-stone-600 mb-8">ہمارا حل</p>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 flex gap-4">
-                <div class="w-12 h-12 rounded-xl bg-mint-light flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-primary">translate</span>
-                </div>
-                <div>
-                    <h3 class="font-bold text-charcoal mb-1">Fully Bilingual</h3>
-                    <p class="text-sm text-stone-500">Every piece of information is delivered in both English and Urdu (Nastaliq script), making it accessible to all literacy levels.</p>
-                </div>
+        <div class="max-w-3xl mx-auto">
+            <div class="flex gap-2 bg-white p-2 rounded-2xl shadow-sm mb-6">
+                <button class="tab-btn active flex-1 py-3 px-4 rounded-xl text-sm md:text-base font-semibold flex items-center justify-center gap-2" data-tab="photo">
+                    <span class="material-symbols-outlined">photo_camera</span>
+                    <span class="hidden sm:inline">Photo</span>
+                    <span class="urdu text-sm hidden md:inline">/ تصویر</span>
+                </button>
+                <button class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm md:text-base font-semibold text-stone-600 flex items-center justify-center gap-2" data-tab="type">
+                    <span class="material-symbols-outlined">keyboard</span>
+                    <span class="hidden sm:inline">Type</span>
+                    <span class="urdu text-sm hidden md:inline">/ لکھیں</span>
+                </button>
+                <button class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm md:text-base font-semibold text-stone-600 flex items-center justify-center gap-2" data-tab="speak">
+                    <span class="material-symbols-outlined">mic</span>
+                    <span class="hidden sm:inline">Speak</span>
+                    <span class="urdu text-sm hidden md:inline">/ بولیں</span>
+                </button>
             </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 flex gap-4">
-                <div class="w-12 h-12 rounded-xl bg-mint-light flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-primary">mic</span>
-                </div>
-                <div>
-                    <h3 class="font-bold text-charcoal mb-1">Voice-First Design</h3>
-                    <p class="text-sm text-stone-500">Users who cannot read can speak the medicine name and hear the results — removing literacy as a barrier entirely.</p>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 flex gap-4">
-                <div class="w-12 h-12 rounded-xl bg-mint-light flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-primary">auto_awesome</span>
-                </div>
-                <div>
-                    <h3 class="font-bold text-charcoal mb-1">AI-Powered Accuracy</h3>
-                    <p class="text-sm text-stone-500">Powered by large language models to generate reliable, structured, and up-to-date medicine information on demand.</p>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 flex gap-4">
-                <div class="w-12 h-12 rounded-xl bg-mint-light flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-primary">psychology</span>
-                </div>
-                <div>
-                    <h3 class="font-bold text-charcoal mb-1">Symptom-Based Search</h3>
-                    <p class="text-sm text-stone-500">Don't know the medicine name? Describe your symptoms and get a safe over-the-counter recommendation with severity-aware guidance.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- What It Provides -->
-    <section class="mb-16">
-        <div class="bg-mint-light rounded-3xl p-8 md:p-12">
-            <h2 class="text-2xl font-bold text-charcoal mb-2">What DawaSaathi Tells You</h2>
-            <p class="urdu text-lg text-stone-600 mb-8">دوا ساتھی کیا بتاتا ہے</p>
-            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {%- set info_items = [
-                    ("medication", "Active Ingredients", "اجزاء"),
-                    ("healing", "Uses & Indications", "استعمال"),
-                    ("schedule", "Dosage & Timing", "خوراک"),
-                    ("warning", "Side Effects", "مضر اثرات"),
-                    ("block", "Warnings & Contraindications", "تنبیہات"),
-                    ("swap_horiz", "Safe Alternatives", "متبادل ادویات")
-                ] %}
-                {% for icon, label_en, label_ur in info_items %}
-                <div class="bg-white rounded-xl px-5 py-4 flex items-center gap-3 shadow-sm">
-                    <span class="material-symbols-outlined text-primary">{{ icon }}</span>
-                    <div>
-                        <p class="font-semibold text-sm text-charcoal">{{ label_en }}</p>
-                        <p class="urdu text-xs text-stone-500">{{ label_ur }}</p>
+            <div class="bg-white rounded-2xl shadow-md p-8 min-h-[300px]">
+
+                <!-- ── PHOTO TAB ──────────────────────────────────────── -->
+                <div class="tab-content active" id="photo-content">
+                    <div id="photo-drop-area" class="border-2 border-dashed border-primary/40 rounded-2xl p-10 text-center">
+
+                        <!-- Default idle state -->
+                        <div id="photo-idle-state">
+                            <span class="material-symbols-outlined text-primary mb-3" style="font-size: 64px;">cloud_upload</span>
+                            <p class="text-lg font-semibold text-charcoal mb-2">Drop your medicine photo here</p>
+                            <p class="urdu text-stone-600 mb-4">یہاں اپنی دوا کی تصویر اپ لوڈ کریں</p>
+                            <label for="photo-input" class="inline-block cursor-pointer bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
+                                Choose File
+                            </label>
+                            <input type="file" id="photo-input" name="medicine_image" accept="image/*" class="hidden" />
+                        </div>
+
+                        <!-- Unavailable notice — shown after a file is chosen -->
+                        <div id="photo-unavailable-state" class="hidden flex-col items-center justify-center py-2">
+                            <div class="w-16 h-16 rounded-full bg-stone-100 flex items-center justify-center mb-5">
+                                <span class="material-symbols-outlined text-stone-400" style="font-size: 36px;">image_not_supported</span>
+                            </div>
+                            <p class="text-lg font-semibold text-charcoal mb-1">Photo Analysis Unavailable</p>
+                            <p class="urdu text-stone-500 mb-4">تصویر کا تجزیہ ابھی دستیاب نہیں ہے</p>
+                            <p class="text-sm text-stone-400 max-w-xs mb-6">
+                                Image recognition is not supported yet. Please use one of the options below to search for your medicine.
+                            </p>
+                            <div class="flex gap-3 flex-wrap justify-center">
+                                <button id="photo-try-type" type="button"
+                                    class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity">
+                                    <span class="material-symbols-outlined text-base">keyboard</span>
+                                    Type the Name
+                                </button>
+                                <button id="photo-try-speak" type="button"
+                                    class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary text-primary text-sm font-semibold hover:bg-mint-light transition-colors">
+                                    <span class="material-symbols-outlined text-base">mic</span>
+                                    Use Voice
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
 
-    <!-- Tech Stack -->
-    <section class="mb-16">
-        <h2 class="text-2xl font-bold text-charcoal mb-2">Technology</h2>
-        <p class="urdu text-lg text-stone-600 mb-8">ٹیکنالوجی</p>
-        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white border border-stone-100 rounded-2xl p-5 text-center shadow-sm">
-                <p class="text-2xl mb-2">🐍</p>
-                <p class="font-bold text-sm text-charcoal">Python Flask</p>
-                <p class="text-xs text-stone-400 mt-1">Backend API</p>
-            </div>
-            <div class="bg-white border border-stone-100 rounded-2xl p-5 text-center shadow-sm">
-                <p class="text-2xl mb-2">🤖</p>
-                <p class="font-bold text-sm text-charcoal">Llama 3.3 70B</p>
-                <p class="text-xs text-stone-400 mt-1">AI via Groq</p>
-            </div>
-            <div class="bg-white border border-stone-100 rounded-2xl p-5 text-center shadow-sm">
-                <p class="text-2xl mb-2">🎤</p>
-                <p class="font-bold text-sm text-charcoal">Web Speech API</p>
-                <p class="text-xs text-stone-400 mt-1">Voice Input/Output</p>
-            </div>
-            <div class="bg-white border border-stone-100 rounded-2xl p-5 text-center shadow-sm">
-                <p class="text-2xl mb-2">🌐</p>
-                <p class="font-bold text-sm text-charcoal">Tailwind CSS</p>
-                <p class="text-xs text-stone-400 mt-1">Responsive UI</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Disclaimer -->
-    <section>
-        <div class="bg-stone-100 rounded-2xl p-6 border border-stone-200">
-            <div class="flex gap-4 items-start">
-                <span class="material-symbols-outlined text-stone-500 mt-1">info</span>
-                <div>
-                    <p class="font-bold text-charcoal mb-1">Medical Disclaimer</p>
-                    <p class="text-sm text-stone-600 leading-relaxed">
-                        DawaSaathi provides AI-generated medicine information for educational and informational purposes only.
-                        It is not a substitute for professional medical advice, diagnosis, or treatment.
-                        Always consult a qualified doctor or licensed pharmacist before starting, stopping, or changing any medication.
-                        In case of emergency, contact your nearest healthcare facility immediately.
-                    </p>
-                    <p class="urdu text-sm text-stone-500 mt-3">
-                        دوا ساتھی صرف معلوماتی مقاصد کے لیے ہے۔ کوئی بھی دوا لینے سے پہلے ڈاکٹر یا فارماسسٹ سے ضرور مشورہ کریں۔
-                    </p>
+                <!-- ── TYPE TAB ───────────────────────────────────────── -->
+                <div class="tab-content" id="type-content">
+                    <form action="{{ url_for('search_medicine') }}" method="POST">
+                        <div class="mb-6">
+                            <label class="block text-charcoal font-semibold mb-2">Type the medicine name</label>
+                            <p class="urdu text-stone-600 mb-4">دوا کا نام لکھیں</p>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
+                                <input
+                                    type="text"
+                                    name="medicine_name"
+                                    placeholder="e.g., Panadol, Brufen, Augmentin..."
+                                    required
+                                    autofocus
+                                    class="w-full pl-12 pr-4 py-4 text-lg rounded-full border border-stone-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-mint"
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white py-4 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">search</span>
+                            Get Information
+                        </button>
+                    </form>
                 </div>
+
+                <!-- ── SPEAK TAB ──────────────────────────────────────── -->
+                <div class="tab-content" id="speak-content">
+                    <div class="text-center py-4">
+
+                        <button id="voice-btn" type="button"
+                            class="mic-idle w-32 h-32 rounded-full bg-primary text-white flex items-center justify-center mx-auto mb-6 hover:opacity-90 transition-all duration-300 focus:outline-none">
+                            <span class="material-symbols-outlined" id="mic-icon" style="font-size: 64px;">mic</span>
+                        </button>
+
+                        <p class="text-base font-semibold text-charcoal mb-1" id="voice-status">Tap the microphone and say the medicine name</p>
+                        <p class="urdu text-stone-500 text-sm mb-4" id="voice-status-ur">مائیک دبائیں اور دوا کا نام بولیں</p>
+
+                        <div id="transcript-box" class="hidden mb-4">
+                            <div class="bg-mint-light border border-primary/20 rounded-2xl px-5 py-4 text-left">
+                                <p class="text-xs text-stone-500 uppercase font-semibold tracking-wide mb-1">Heard:</p>
+                                <p class="text-lg font-bold text-charcoal" id="transcript-text"></p>
+                            </div>
+                        </div>
+
+                        <!--
+                            FIX: Removed the conflicting `flex` utility class from the initial HTML.
+                            Tailwind CDN resolves both `hidden` (display:none) and `flex` (display:flex)
+                            on the same element unpredictably depending on stylesheet ordering.
+                            We now control visibility entirely via the `hidden` class toggle, which
+                            correctly switches between `display:none` and the element's default flow.
+                            The `flex` layout is applied via an inline wrapper instead.
+                        -->
+                        <div id="voice-actions" class="hidden mb-2">
+                            <div class="flex gap-3 justify-center">
+                                <button id="voice-retry" type="button"
+                                    class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-stone-300 text-stone-600 text-sm font-semibold hover:bg-stone-100 transition-colors">
+                                    <span class="material-symbols-outlined text-base">refresh</span>
+                                    Try Again
+                                </button>
+                                <button id="voice-confirm" type="button"
+                                    class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity">
+                                    <span class="material-symbols-outlined text-base">search</span>
+                                    Search This
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="voice-unsupported" class="hidden">
+                            <div class="bg-coral-light border border-coral/30 rounded-xl px-5 py-4 text-sm text-coral font-medium">
+                                Your browser does not support voice recognition.<br/>
+                                Please use <strong>Chrome</strong> or <strong>Edge</strong> for this feature.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
-
 </main>
 
-<footer class="bg-stone-100 py-8 px-6 border-t border-stone-200 mt-8">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div>
-            <p class="font-bold text-primary text-lg">DawaSaathi <span class="urdu">دوا ساتھی</span></p>
-            <p class="text-xs text-stone-500 mt-1">Powered by Llama AI via Groq</p>
-        </div>
-    </div>
-</footer>
+<script>
+// ─── Tab switching ────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(tab + '-content').classList.add('active');
+    });
+});
 
+// ─── Photo Tab: show unavailable card immediately on file select ──────────
+// No network call is made. The backend's analyze_medicine_image() is not
+// yet implemented, so we handle this entirely on the client side and prompt
+// the user to switch to Type or Speak instead.
+const photoInput          = document.getElementById('photo-input');
+const photoIdleState      = document.getElementById('photo-idle-state');
+const photoUnavailState   = document.getElementById('photo-unavailable-state');
+const photoBtnType        = document.getElementById('photo-try-type');
+const photoBtnSpeak       = document.getElementById('photo-try-speak');
+
+function showUnavailable() {
+    photoIdleState.classList.add('hidden');
+    photoUnavailState.classList.remove('hidden');
+    photoUnavailState.classList.add('flex');
+    photoInput.value = ''; // clear the file so the browser forgets about it
+}
+
+photoInput.addEventListener('change', (e) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    showUnavailable();
+});
+
+// "Type the Name" button → switch to the Type tab
+photoBtnType.addEventListener('click', () => {
+    const typeBtn = document.querySelector('[data-tab="type"]');
+    if (typeBtn) typeBtn.click();
+});
+
+// "Use Voice" button → switch to the Speak tab
+photoBtnSpeak.addEventListener('click', () => {
+    const speakBtn = document.querySelector('[data-tab="speak"]');
+    if (speakBtn) speakBtn.click();
+});
+
+
+// ─── Voice Recognition ───────────────────────────────────────
+const voiceBtn       = document.getElementById('voice-btn');
+const micIcon        = document.getElementById('mic-icon');
+const voiceStatus    = document.getElementById('voice-status');
+const voiceStatusUr  = document.getElementById('voice-status-ur');
+const transcriptBox  = document.getElementById('transcript-box');
+const transcriptText = document.getElementById('transcript-text');
+const voiceActions   = document.getElementById('voice-actions');
+const voiceRetry     = document.getElementById('voice-retry');
+const voiceConfirm   = document.getElementById('voice-confirm');
+const voiceUnsup     = document.getElementById('voice-unsupported');
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    voiceBtn.disabled = true;
+    voiceBtn.classList.add('opacity-40', 'cursor-not-allowed');
+    voiceUnsup.classList.remove('hidden');
+} else {
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+
+    let isListening = false;
+    let capturedText = '';
+
+    // FIX: Guard flag prevents recognition.start() being called while a
+    // previous session is still in its teardown phase, which throws a
+    // DOMException("Failed to execute 'start'") on some browsers.
+    let isStarting = false;
+
+    function resetUI() {
+        voiceBtn.classList.remove('mic-active', 'bg-coral');
+        voiceBtn.classList.add('mic-idle', 'bg-primary');
+        micIcon.textContent = 'mic';
+        voiceActions.classList.add('hidden');
+    }
+
+    function startListening() {
+        if (isListening || isStarting) return;
+
+        capturedText = '';
+        transcriptBox.classList.add('hidden');
+        transcriptText.textContent = '';
+        voiceActions.classList.add('hidden');
+
+        voiceStatus.textContent = 'Starting microphone...';
+        voiceStatusUr.textContent = 'مائیکروفون شروع ہو رہا ہے...';
+
+        isStarting = true;
+        try {
+            recognition.start();
+        } catch (e) {
+            console.error('Mic start error:', e);
+            isStarting = false;
+            voiceStatus.textContent = 'Microphone blocked or in use. Please try again.';
+            voiceStatusUr.textContent = 'مائیکروفون میں خرابی ہے۔';
+            resetUI();
+        }
+    }
+
+    recognition.onstart = () => {
+        isListening = true;
+        isStarting  = false;
+        voiceStatus.textContent = 'Listening...';
+        voiceStatusUr.textContent = 'سن رہا ہوں...';
+        voiceBtn.classList.remove('mic-idle', 'bg-primary');
+        voiceBtn.classList.add('mic-active', 'bg-coral');
+        micIcon.textContent = 'mic_off';
+    };
+
+    voiceBtn.addEventListener('click', () => {
+        if (isListening) {
+            try { recognition.stop(); } catch(e) {}
+        } else {
+            startListening();
+        }
+    });
+
+    voiceRetry.addEventListener('click', () => {
+        resetUI();
+        // Small delay ensures the previous recognition session has fully torn down
+        // before we call start() again, avoiding DOMException race conditions.
+        setTimeout(startListening, 150);
+    });
+
+    voiceConfirm.addEventListener('click', () => {
+        if (!capturedText.trim()) return;
+        voiceStatus.textContent = 'Searching for: ' + capturedText + '...';
+        voiceStatusUr.textContent = 'تلاش ہو رہی ہے...';
+        voiceActions.classList.add('hidden');
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{{ url_for('search_medicine') }}";
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'medicine_name';
+        input.value = capturedText.trim();
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    recognition.onresult = (event) => {
+        let interim = '';
+        let final   = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const t = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                final += t;
+            } else {
+                interim += t;
+            }
+        }
+        const display = final || interim;
+        if (display) {
+            transcriptBox.classList.remove('hidden');
+            transcriptText.textContent = display;
+        }
+        if (final) capturedText = final;
+    };
+
+    recognition.onend = () => {
+        isListening = false;
+        isStarting  = false;
+        resetUI();
+
+        if (capturedText.trim()) {
+            voiceStatus.textContent    = 'Is this correct?';
+            voiceStatusUr.textContent  = 'کیا یہ درست ہے؟';
+            voiceActions.classList.remove('hidden');   // inner div handles flex layout
+        } else {
+            voiceStatus.textContent    = 'Nothing heard. Tap the mic and try again.';
+            voiceStatusUr.textContent  = 'کچھ سنائی نہیں دیا۔ دوبارہ کوشش کریں۔';
+            transcriptBox.classList.add('hidden');
+        }
+    };
+
+    recognition.onerror = (event) => {
+        isListening = false;
+        isStarting  = false;
+        resetUI();
+
+        const messages = {
+            'not-allowed' : 'Microphone access denied. Please allow mic permission in your browser.',
+            'no-speech'   : 'No speech detected. Please speak clearly and try again.',
+            'network'     : 'Network error. Please check your connection.',
+            'aborted'     : 'Recording stopped.',
+        };
+        voiceStatus.textContent   = messages[event.error] || 'Error: ' + event.error;
+        voiceStatusUr.textContent = 'خرابی ہوئی، دوبارہ کوشش کریں۔';
+        transcriptBox.classList.add('hidden');
+        voiceActions.classList.add('hidden');
+    };
+}
+</script>
 </body>
 </html>
