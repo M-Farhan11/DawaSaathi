@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>{{ issue.name_en }} - DawaSaathi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "tertiary-container": "#c6495e", "on-background": "#1e1b19",
+                    "secondary": "#006b5e", "secondary-container": "#96f3e1",
+                    "on-secondary-container": "#007164", "on-surface-variant": "#3d4947",
+                    "tertiary-fixed": "#ffdadc", "tertiary": "#a63047",
+                    "primary-container": "#008378", "surface-container-low": "#faf2ee",
+                    "primary": "#00685f", "on-primary": "#ffffff",
+                    "on-primary-container": "#f4fffc", "background": "#fff8f5"
+                },
+                spacing: { "md": "24px", "xs": "8px", "gutter": "16px", "xl": "48px", "lg": "32px", "sm": "12px" },
+                fontFamily: {
+                    "body-md": ["Inter"], "display-lg": ["Inter"], "display-ur": ["Noto Nastaliq Urdu"],
+                    "headline-md": ["Inter"], "label-sm": ["Inter"],
+                    "body-ur": ["Noto Nastaliq Urdu"]
+                },
+                fontSize: {
+                    "body-md": ["16px", {"lineHeight": "1.5"}],
+                    "display-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "display-ur": ["34px", {"lineHeight": "2.0"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-sm": ["14px", {"lineHeight": "1.4"}],
+                    "body-ur": ["20px", {"lineHeight": "2.2"}]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+    .urdu-text { font-family: 'Noto Nastaliq Urdu', serif; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+
+<!-- Top Nav -->
+<nav class="bg-stone-50/90 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200 shadow-sm">
+    <div class="flex justify-between items-center w-full px-6 py-3 max-w-7xl mx-auto">
+        <a href="{{ url_for('index') }}" class="text-2xl font-bold text-teal-600">DawaSaathi</a>
+        <a href="{{ url_for('index') }}" class="flex items-center gap-2 text-teal-600 hover:text-teal-700">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>Home</span>
+        </a>
+    </div>
+</nav>
+
+<main class="pb-16 px-5 md:px-10 max-w-5xl mx-auto py-8">
+
+    <!-- Voice Playback Top -->
+    <div class="flex justify-center mb-8">
+        <button onclick="speakWholeGuide()" class="group flex items-center gap-4 bg-primary-container text-on-primary-container px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 text-white">
+            <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+            <div class="text-left">
+                <p class="font-label-sm uppercase tracking-wider text-[10px] opacity-80">Listen to Guide</p>
+                <p class="font-body-ur text-lg">رہنمائی سنیں</p>
+            </div>
+        </button>
+    </div>
+
+    <!-- Hero -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12 bg-surface-container-low rounded-3xl p-8 overflow-hidden relative">
+        <div class="relative z-10">
+            <span class="inline-block bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-semibold mb-4">HEALTH GUIDE</span>
+            <h1 class="font-display-lg text-display-lg text-primary mb-2">{{ issue.name_en }}</h1>
+            <h2 class="font-display-ur text-display-ur text-on-background mb-4">{{ issue.name_ur }}</h2>
+            <p class="text-body-md text-on-surface-variant max-w-md">
+                {{ issue.intro_en }}
+                <span class="block mt-2 urdu-text text-lg">{{ issue.intro_ur }}</span>
+            </p>
+        </div>
+        <div class="flex justify-center">
+            <div class="w-64 h-64 rounded-full bg-gradient-to-br from-teal-100 to-teal-300 flex items-center justify-center shadow-2xl">
+                <span class="material-symbols-outlined text-white" style="font-size: 120px;">{{ issue.icon }}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Causes -->
+    <section class="mb-12">
+        <h3 class="font-headline-md text-headline-md mb-8 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">psychology</span>
+            Common Causes / عام وجوہات
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {% for cause in issue.causes %}
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center text-center">
+                <span class="material-symbols-outlined text-{{ cause.color }} mb-3 text-3xl">{{ cause.icon }}</span>
+                <p class="font-label-sm text-stone-600">{{ cause.name_en }}</p>
+                <p class="urdu-text text-sm">{{ cause.name_ur }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Home Remedies -->
+    <section class="mb-12">
+        <div class="bg-secondary/5 rounded-3xl p-8" style="background: rgba(0,107,94,0.05);">
+            <h3 class="font-headline-md text-headline-md mb-8 flex items-center gap-2 text-secondary">
+                <span class="material-symbols-outlined">home_health</span>
+                Safe Home Remedies / گھریلو علاج
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {% for remedy in issue.remedies %}
+                <div class="flex gap-4 items-start">
+                    <div class="bg-white p-3 rounded-xl shadow-sm">
+                        <span class="material-symbols-outlined text-secondary">{{ remedy.icon }}</span>
+                    </div>
+                    <div>
+                        <h4 class="font-headline-md text-lg">{{ remedy.name_en }}</h4>
+                        <p class="urdu-text text-sm">{{ remedy.name_ur }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- OTC Medicines -->
+    <section class="mb-12">
+        <h3 class="font-headline-md text-headline-md mb-8 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">medication</span>
+            Common Medicines / عام ادویات
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for med in issue.medicines %}
+            <div class="bg-white border border-stone-100 rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-2xl font-bold text-primary">{{ med.name }}</h4>
+                        <p class="text-stone-500 font-label-sm">({{ med.generic }})</p>
+                    </div>
+                    <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold">OTC</span>
+                </div>
+                <div class="space-y-2 mb-6">
+                    <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+                        <span class="material-symbols-outlined text-lg">schedule</span>
+                        {{ med.timing }}
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+                        <span class="material-symbols-outlined text-lg">info</span>
+                        {{ med.dosage }}
+                    </div>
+                </div>
+                <div class="bg-stone-50 rounded-2xl p-4">
+                    <p class="urdu-text text-stone-700">{{ med.urdu_note }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Red Flags -->
+    <section class="mb-12">
+        <div class="border-2 border-tertiary/30 bg-tertiary-fixed rounded-3xl p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+                <span class="material-symbols-outlined text-7xl text-tertiary">emergency</span>
+            </div>
+            <h3 class="font-headline-md text-headline-md text-tertiary mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined">report</span>
+                When to See a Doctor / ڈاکٹر سے کب رجوع کریں
+            </h3>
+            <ul class="space-y-4 relative z-10">
+                {% for flag in issue.red_flags %}
+                <li class="flex items-center gap-4">
+                    <span class="w-2 h-2 rounded-full bg-tertiary flex-shrink-0"></span>
+                    <div>
+                        <p class="text-body-md font-semibold">{{ flag.en }}</p>
+                        <p class="urdu-text text-sm opacity-80">{{ flag.ur }}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="pb-12">
+        <a href="{{ url_for('index') }}" class="w-full bg-primary text-on-primary py-8 rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-4 group text-white">
+            <div class="text-right">
+                <p class="text-body-md font-bold">Check your specific medicine</p>
+                <p class="urdu-text text-lg opacity-90">اپنی مخصوص دوا کے بارے میں جانیں</p>
+            </div>
+            <span class="material-symbols-outlined text-3xl group-hover:translate-x-2 transition-transform">arrow_forward</span>
+        </a>
+    </section>
+</main>
+
+<script>
+    function speakWholeGuide() {
+        const text = `{{ issue.name_en }}. {{ issue.intro_en }}`;
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+</script>
+</body>
+</html>s

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DawaSaathi - Your AI Medicine Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#00685f",
+                    "mint": "#96f3e1",
+                    "mint-light": "#d6f5ee",
+                    "background": "#fff8f5",
+                    "charcoal": "#1e1b19",
+                    "coral": "#c6495e",
+                    "coral-light": "#fef2f2"
+                },
+                fontFamily: {
+                    "inter": ["Inter", "sans-serif"],
+                    "urdu": ["Noto Nastaliq Urdu", "serif"]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .urdu { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+    
+    /* Tab styles */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .tab-btn.active { background-color: #00685f; color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    .tab-btn { transition: all 0.2s ease; }
+    
+    /* Mic pulse animation */
+    @keyframes pulse-ring {
+        0% { box-shadow: 0 0 0 0 rgba(0, 104, 95, 0.4); }
+        70% { box-shadow: 0 0 0 20px rgba(0, 104, 95, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 104, 95, 0); }
+    }
+    .mic-pulse { animation: pulse-ring 2s infinite; }
+</style>
+</head>
+<body class="bg-background text-charcoal">
+
+<!-- TOP NAVIGATION -->
+<header class="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+        <a href="{{ url_for('index') }}" class="flex items-center gap-2">
+            <span class="text-2xl font-bold text-primary tracking-tight">DawaSaathi</span>
+            <span class="urdu text-lg border-l border-stone-300 pl-2">دوا ساتھی</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="{{ url_for('index') }}" class="text-sm font-semibold text-primary border-b-2 border-primary pb-1">Home</a>
+            <a href="{{ url_for('common_issues') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">Common Issues</a>
+            <a href="{{ url_for('about') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">About</a>
+        </nav>
+        <button class="px-4 py-1.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-mint-light transition-colors">
+            EN | <span class="urdu">اردو</span>
+        </button>
+    </div>
+</header>
+
+<main class="pt-24 pb-12 px-5 md:px-10 max-w-6xl mx-auto">
+
+    <!-- HERO + TABBED INPUT -->
+    <section class="bg-mint-light rounded-3xl p-6 md:p-12 mb-16">
+        <!-- Hero Text -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="inline-block bg-white/80 text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-6">
+                AI Medicine Guide
+            </span>
+            <h1 class="text-4xl md:text-5xl font-bold text-charcoal mb-3 leading-tight">
+                Identify Your Medicine in Seconds
+            </h1>
+            <h2 class="urdu text-2xl md:text-3xl text-charcoal mb-5">
+                چند سیکنڈ میں اپنی دوا کو پہچانیں
+            </h2>
+            <p class="text-stone-600 text-base md:text-lg">
+                Show us your medicine — by photo, name, or voice — and get instant information in Urdu and English with audio playback.
+            </p>
+        </div>
+
+        <!-- Tabbed Interface -->
+        <div class="max-w-3xl mx-auto">
+            <!-- Tab Buttons -->
+            <div class="flex gap-2 bg-white p-2 rounded-2xl shadow-sm mb-6">
+                <button class="tab-btn active flex-1 py-3 px-4 rounded-xl text-sm md:text-base font-semibold flex items-center justify-center gap-2" data-tab="photo">
+                    <span class="material-symbols-outlined">photo_camera</span>
+                    <span class="hidden sm:inline">Photo</span>
+                    <span class="urdu text-sm hidden md:inline">/ تصویر</span>
+                </button>
+                <button class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm md:text-base font-semibold text-stone-600 flex items-center justify-center gap-2" data-tab="type">
+                    <span class="material-symbols-outlined">keyboard</span>
+                    <span class="hidden sm:inline">Type</span>
+                    <span class="urdu text-sm hidden md:inline">/ لکھیں</span>
+                </button>
+                <button class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm md:text-base font-semibold text-stone-600 flex items-center justify-center gap-2" data-tab="speak">
+                    <span class="material-symbols-outlined">mic</span>
+                    <span class="hidden sm:inline">Speak</span>
+                    <span class="urdu text-sm hidden md:inline">/ بولیں</span>
+                </button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="bg-white rounded-2xl shadow-md p-8 min-h-[300px]">
+                
+                <!-- PHOTO TAB -->
+                <div class="tab-content active" id="photo-content">
+                    <form action="{{ url_for('analyze_image') }}" method="POST" enctype="multipart/form-data" id="photo-form">
+                        <label for="photo-input" class="block cursor-pointer">
+                            <div class="border-2 border-dashed border-primary/40 rounded-2xl p-10 text-center hover:bg-mint-light/30 transition-colors">
+                                <span class="material-symbols-outlined text-primary mb-3" style="font-size: 64px;">cloud_upload</span>
+                                <p class="text-lg font-semibold text-charcoal mb-2">Drop your medicine photo here</p>
+                                <p class="urdu text-stone-600 mb-4">یہاں اپنی دوا کی تصویر اپ لوڈ کریں</p>
+                                <span class="inline-block bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
+                                    Choose File
+                                </span>
+                            </div>
+                            <input type="file" id="photo-input" name="medicine_image" accept="image/*" class="hidden" onchange="document.getElementById('photo-form').submit()"/>
+                        </label>
+                    </form>
+                </div>
+
+                <!-- TYPE TAB -->
+                <div class="tab-content" id="type-content">
+                    <form action="{{ url_for('search_medicine') }}" method="POST">
+                        <div class="mb-6">
+                            <label class="block text-charcoal font-semibold mb-2">Type the medicine name</label>
+                            <p class="urdu text-stone-600 mb-4">دوا کا نام لکھیں</p>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
+                                <input 
+                                    type="text" 
+                                    name="medicine_name" 
+                                    placeholder="e.g., Panadol, Brufen, Augmentin..." 
+                                    required
+                                    autofocus
+                                    class="w-full pl-12 pr-4 py-4 text-lg rounded-full border border-stone-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-mint"
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white py-4 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">search</span>
+                            Get Information
+                        </button>
+                    </form>
+                </div>
+
+                <!-- SPEAK TAB -->
+                <div class="tab-content" id="speak-content">
+                    <div class="text-center py-6">
+                        <button id="voice-btn" type="button" class="mic-pulse w-32 h-32 rounded-full bg-primary text-white flex items-center justify-center mx-auto mb-6 hover:opacity-90 transition-opacity">
+                            <span class="material-symbols-outlined" style="font-size: 64px;">mic</span>
+                        </button>
+                        <p class="text-lg font-semibold text-charcoal mb-2" id="voice-status">Tap the microphone to speak</p>
+                        <p class="urdu text-stone-600 mb-4">دوا کا نام بولنے کے لیے مائیک پر کلک کریں</p>
+                        <p class="text-xs text-stone-500">Make sure to allow microphone access in your browser</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="mb-16">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-charcoal mb-2">How It Works</h2>
+            <p class="urdu text-xl text-stone-600">یہ کیسے کام کرتا ہے</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Step 1 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 text-center">
+                <div class="w-12 h-12 rounded-full bg-primary text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">1</div>
+                <span class="material-symbols-outlined text-primary mb-3" style="font-size: 48px;">add_a_photo</span>
+                <h3 class="font-bold text-lg mb-1">Show Your Medicine</h3>
+                <p class="urdu text-stone-600 mb-2">اپنی دوا دکھائیں</p>
+                <p class="text-sm text-stone-500">Upload a photo, type the name, or speak it out loud.</p>
+            </div>
+            <!-- Step 2 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 text-center">
+                <div class="w-12 h-12 rounded-full bg-primary text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">2</div>
+                <span class="material-symbols-outlined text-primary mb-3" style="font-size: 48px;">auto_awesome</span>
+                <h3 class="font-bold text-lg mb-1">AI Reads It Instantly</h3>
+                <p class="urdu text-stone-600 mb-2">اے آئی فوراً پڑھتا ہے</p>
+                <p class="text-sm text-stone-500">Powered by Google Gemini AI for accurate analysis.</p>
+            </div>
+            <!-- Step 3 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-100 text-center">
+                <div class="w-12 h-12 rounded-full bg-primary text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">3</div>
+                <span class="material-symbols-outlined text-primary mb-3" style="font-size: 48px;">record_voice_over</span>
+                <h3 class="font-bold text-lg mb-1">Get Bilingual Info</h3>
+                <p class="urdu text-stone-600 mb-2">دو زبانوں میں معلومات</p>
+                <p class="text-sm text-stone-500">Read in Urdu + English, or listen with voice playback.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY DAWASAATHI -->
+    <section class="mb-16">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-charcoal mb-2">Why DawaSaathi?</h2>
+            <p class="urdu text-xl text-stone-600">دوا ساتھی کیوں؟</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-mint-light rounded-2xl p-5 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+                <span class="font-semibold text-sm">Bilingual</span>
+            </div>
+            <div class="bg-mint-light rounded-2xl p-5 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+                <span class="font-semibold text-sm">Voice-Enabled</span>
+            </div>
+            <div class="bg-mint-light rounded-2xl p-5 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+                <span class="font-semibold text-sm">AI-Powered</span>
+            </div>
+            <div class="bg-mint-light rounded-2xl p-5 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+                <span class="font-semibold text-sm">100% Free</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- EMERGENCY + DISCLAIMER -->
+    <section class="mb-12">
+        <div class="bg-coral-light border-2 border-coral/30 rounded-2xl p-6">
+            <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                <div class="flex items-center gap-4">
+                    <div class="bg-coral text-white w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined">emergency</span>
+                    </div>
+                    <div>
+                        <p class="font-bold text-coral text-lg">Medical Emergency?</p>
+                        
+                    </div>
+                </div>
+                <div class="hidden md:block w-px h-16 bg-stone-300"></div>
+                <p class="text-sm text-stone-600 flex-1">
+                    DawaSaathi provides AI-generated information only. Always consult a qualified doctor for medical decisions.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-stone-100 py-8 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <p class="font-bold text-primary text-lg">DawaSaathi <span class="urdu">دوا ساتھی</span></p>
+            <p class="text-xs text-stone-500 mt-1">Powered by Google Gemini AI</p>
+        </div>
+       
+    </div>
+</footer>
+
+<script>
+    // Tab switching
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabName = btn.dataset.tab;
+            
+            // Update buttons
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update contents
+            tabContents.forEach(c => c.classList.remove('active'));
+            document.getElementById(tabName + '-content').classList.add('active');
+        });
+    });
+    
+    // Voice recognition
+    const voiceBtn = document.getElementById('voice-btn');
+    const voiceStatus = document.getElementById('voice-status');
+    
+    if (voiceBtn) {
+        voiceBtn.addEventListener('click', () => {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Voice not supported. Please use Google Chrome.');
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            
+            voiceStatus.textContent = 'Listening...';
+            voiceBtn.classList.remove('mic-pulse');
+            voiceBtn.classList.add('animate-pulse');
+            recognition.start();
+            
+            recognition.onresult = (event) => {
+                const text = event.results[0][0].transcript;
+                voiceStatus.textContent = 'Heard: ' + text;
+                
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = "{{ url_for('search_medicine') }}";
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'medicine_name';
+                input.value = text;
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            };
+            
+            recognition.onerror = (event) => {
+                voiceStatus.textContent = 'Try again. Allow mic access.';
+                voiceBtn.classList.add('mic-pulse');
+                voiceBtn.classList.remove('animate-pulse');
+            };
+            
+            recognition.onend = () => {
+                voiceBtn.classList.remove('animate-pulse');
+                voiceBtn.classList.add('mic-pulse');
+            };
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About - DawaSaathi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#00685f",
+                    "mint": "#96f3e1",
+                    "mint-light": "#d6f5ee",
+                    "background": "#fff8f5",
+                    "charcoal": "#1e1b19",
+                    "coral": "#c6495e",
+                    "coral-light": "#fef2f2"
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .urdu { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; }
+</style>
+</head>
+<body class="bg-background text-charcoal">
+
+<!-- TOP NAVIGATION -->
+<header class="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+        <a href="{{ url_for('index') }}" class="flex items-center gap-2">
+            <span class="text-2xl font-bold text-primary tracking-tight">DawaSaathi</span>
+            <span class="urdu text-lg border-l border-stone-300 pl-2">دوا ساتھی</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="{{ url_for('index') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">Home</a>
+            <a href="{{ url_for('common_issues') }}" class="text-sm font-medium text-stone-600 hover:text-primary transition-colors">Common Issues</a>
+            <a href="{{ url_for('about') }}" class="text-sm font-semibold text-primary border-b-2 border-primary pb-1">About</a>
+        </nav>
+        <button class="px-4 py-1.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-mint-light transition-colors">
+            EN | <span class="urdu">اردو</span>
+        </button>
+    </div>
+</header>
+
+<main class="pt-24 pb-12 px-5 md:px-10 max-w-5xl mx-auto">
+
+    <!-- EMOTIONAL HERO -->
+    <section class="bg-mint-light rounded-3xl p-8 md:p-14 mb-12 text-center">
+        <span class="inline-block bg-white/80 text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-6">
+            Our Story
+        </span>
+        <p class="text-xl md:text-3xl font-bold text-charcoal italic mb-4 leading-relaxed">
+            "Built for every grandmother, every villager, every Pakistani who deserves to understand their medicine."
+        </p>
+        <p class="urdu text-lg md:text-xl text-stone-700 mb-8">
+            ہر دادی، ہر دیہاتی، ہر پاکستانی کے لیے جو اپنی دوا کو سمجھنے کا حقدار ہے۔
+        </p>
+        <div class="bg-white rounded-2xl p-6 md:p-8 max-w-3xl mx-auto shadow-sm text-left">
+            <span class="material-symbols-outlined text-primary text-4xl mb-3">format_quote</span>
+            <p class="text-stone-700 leading-relaxed mb-4">
+                My grandmother had to take 3 medicines, prescribed in English. She couldn't read them, took them at the wrong time, and ended up in the hospital. This is the story of every Pakistani family. We built DawaSaathi to change this.
+            </p>
+            <p class="urdu text-stone-600 leading-relaxed">
+                میری دادی کو 3 دوائیں لینی تھیں، ڈاکٹر نے انگریزی میں لکھ کر دیں۔ دادی سمجھ نہیں پائیں، غلط وقت پر لیں، اور ہسپتال جانا پڑا۔ یہ کہانی ہر پاکستانی خاندان کی ہے۔
+            </p>
+        </div>
+    </section>
+
+    <!-- THE PROBLEM (Stats) -->
+    <section class="mb-14">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-charcoal mb-2">The Problem We're Solving</h2>
+            <p class="urdu text-xl text-stone-600">ہم جو مسئلہ حل کر رہے ہیں</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 text-center">
+                <span class="material-symbols-outlined text-primary mb-3" style="font-size: 48px;">groups</span>
+                <p class="text-5xl font-bold text-primary mb-2">240M</p>
+                <p class="font-bold text-charcoal mb-2">Pakistanis</p>
+                <p class="text-sm text-stone-500">Potential users who need accessible medical information in their own language.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 text-center">
+                <span class="material-symbols-outlined text-coral mb-3" style="font-size: 48px;">menu_book</span>
+                <p class="text-5xl font-bold text-coral mb-2">40%</p>
+                <p class="font-bold text-charcoal mb-2">Population Illiterate</p>
+                <p class="text-sm text-stone-500">Cannot read English medicine labels and instructions written in technical language.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 text-center">
+                <span class="material-symbols-outlined text-orange-500 mb-3" style="font-size: 48px;">help</span>
+                <p class="text-5xl font-bold text-orange-500 mb-2">60%</p>
+                <p class="font-bold text-charcoal mb-2">Don't Understand</p>
+                <p class="text-sm text-stone-500">People don't fully understand the medicines they take every single day.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE SOLUTION (4 Steps) -->
+    <section class="mb-14">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-charcoal mb-2">How DawaSaathi Helps</h2>
+            <p class="urdu text-xl text-stone-600">دوا ساتھی کیسے مدد کرتا ہے</p>
+        </div>
+        <div class="grid md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 text-center">
+                <div class="w-14 h-14 rounded-full bg-mint-light flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">add_a_photo</span>
+                </div>
+                <p class="text-xs font-bold text-primary mb-2">STEP 1</p>
+                <h3 class="font-bold mb-1">Show Your Medicine</h3>
+                <p class="urdu text-sm text-stone-600 mb-2">دوا دکھائیں</p>
+                <p class="text-xs text-stone-500">Photo, type, or speak.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 text-center">
+                <div class="w-14 h-14 rounded-full bg-mint-light flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">auto_awesome</span>
+                </div>
+                <p class="text-xs font-bold text-primary mb-2">STEP 2</p>
+                <h3 class="font-bold mb-1">AI Reads & Understands</h3>
+                <p class="urdu text-sm text-stone-600 mb-2">اے آئی پڑھتا ہے</p>
+                <p class="text-xs text-stone-500">Google Gemini analyzes.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 text-center">
+                <div class="w-14 h-14 rounded-full bg-mint-light flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">menu_book</span>
+                </div>
+                <p class="text-xs font-bold text-primary mb-2">STEP 3</p>
+                <h3 class="font-bold mb-1">Generates Accurate Info</h3>
+                <p class="urdu text-sm text-stone-600 mb-2">معلومات تیار</p>
+                <p class="text-xs text-stone-500">Complete medical details.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 text-center">
+                <div class="w-14 h-14 rounded-full bg-mint-light flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 32px;">record_voice_over</span>
+                </div>
+                <p class="text-xs font-bold text-primary mb-2">STEP 4</p>
+                <h3 class="font-bold mb-1">Delivers in Your Language</h3>
+                <p class="urdu text-sm text-stone-600 mb-2">آپ کی زبان میں</p>
+                <p class="text-xs text-stone-500">Bilingual + voice.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- KEY FEATURES -->
+    <section class="mb-14">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-charcoal mb-2">What Makes It Special</h2>
+            <p class="urdu text-xl text-stone-600">اسے خاص کیا بناتا ہے</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 flex gap-4">
+                <div class="w-12 h-12 rounded-full bg-mint-light flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary">translate</span>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-1">Bilingual by Design</h3>
+                    <p class="urdu text-sm text-stone-600 mb-2">دو زبانوں میں</p>
+                    <p class="text-sm text-stone-500">Every word in English AND Urdu, with proper Nastaliq font and right-to-left layout.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 flex gap-4">
+                <div class="w-12 h-12 rounded-full bg-mint-light flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary">volume_up</span>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-1">Voice for Everyone</h3>
+                    <p class="urdu text-sm text-stone-600 mb-2">سب کے لیے آواز</p>
+                    <p class="text-sm text-stone-500">Audio playback for users who can't read, in both Urdu and English voices.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 flex gap-4">
+                <div class="w-12 h-12 rounded-full bg-mint-light flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary">smart_toy</span>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-1">AI-Powered Intelligence</h3>
+                    <p class="urdu text-sm text-stone-600 mb-2">اے آئی سے چلنے والا</p>
+                    <p class="text-sm text-stone-500">Powered by Google Gemini for accurate, up-to-date medicine information.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 flex gap-4">
+                <div class="w-12 h-12 rounded-full bg-mint-light flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary">favorite</span>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-1">100% Free & Accessible</h3>
+                    <p class="urdu text-sm text-stone-600 mb-2">مفت اور آسان</p>
+                    <p class="text-sm text-stone-500">No login, no fees, no barriers. Built for all Pakistanis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- VISION -->
+    <section class="mb-12">
+        <div class="bg-mint-light rounded-3xl p-8 md:p-12 text-center">
+            <span class="material-symbols-outlined text-primary mb-4" style="font-size: 48px;">flag</span>
+            <h2 class="text-3xl font-bold text-charcoal mb-2">Our Vision</h2>
+            <p class="urdu text-xl text-stone-600 mb-6">ہمارا نظریہ</p>
+            <p class="text-lg text-charcoal max-w-3xl mx-auto leading-relaxed mb-4">
+                Healthcare information should not require literacy or English fluency. Every Pakistani deserves to understand their own medicine. This is just the beginning.
+            </p>
+            <p class="urdu text-stone-700 max-w-3xl mx-auto leading-relaxed">
+                صحت کی معلومات کے لیے تعلیم یا انگریزی کی ضرورت نہیں ہونی چاہیے۔ ہر پاکستانی اپنی دوا کو سمجھنے کا حقدار ہے۔
+            </p>
+        </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="mb-12">
+        <div class="bg-coral-light border-2 border-coral/30 rounded-2xl p-6">
+            <div class="flex items-start gap-4">
+                <span class="material-symbols-outlined text-coral mt-1" style="font-size: 28px;">warning</span>
+                <div>
+                    <p class="font-bold text-coral mb-2">Important Notice</p>
+                    <p class="text-sm text-stone-700 mb-3 leading-relaxed">
+                        DawaSaathi provides AI-generated informational content only. It does NOT replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical decisions. In emergencies, call 1122 immediately.
+                    </p>
+                    <p class="urdu text-sm text-stone-600 leading-relaxed">
+                        دوا ساتھی صرف معلوماتی مقاصد کے لیے ہے۔ یہ ڈاکٹر کے مشورے کا متبادل نہیں ہے۔
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-stone-100 py-8 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <p class="font-bold text-primary text-lg">DawaSaathi <span class="urdu">دوا ساتھی</span></p>
+            <p class="text-xs text-stone-500 mt-1">Powered by Google Gemini AI</p>
+        </div>
+        
+    </div>
+</footer>
+
+</body>
+</html>
